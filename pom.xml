@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.github.liuyueyi.quick.algorithm</groupId>
+    <artifactId>quick-algorithm</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <modules>
+        <module>math</module>
+        <module>leetcode</module>
+    </modules>
+    <packaging>pom</packaging>
+
+    <name>quick-algorithm</name>
+    <description>算法合集</description>
+    <url>https://github.com/liuyueyi/quick-algorithm</url>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <issueManagement>
+        <system>github</system>
+        <url>https://github.com/liuyueyi/quick-algorithm/issues</url>
+    </issueManagement>
+
+    <scm>
+        <connection>scm:git:https://github.com/liuyueyi/quick-algorithm.git</connection>
+        <developerConnection>scm:git:https://github.com/liuyueyi/quick-algorithm.git</developerConnection>
+        <url>https://github.com/liuyueyi/quick-algorithm</url>
+    </scm>
+
+    <developers>
+        <developer>
+            <name>YiHui</name>
+            <email>bangzewu@126.com</email>
+            <url>http://blog.hhui.top</url>
+        </developer>
+    </developers>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>7</source>
+                    <target>7</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+
+</project>
