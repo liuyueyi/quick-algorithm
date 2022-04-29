@@ -15,11 +15,11 @@ import java.util.Random;
  */
 public class AvgShareTest {
 
-    private final static double min = 0.01;
-    private final static BigDecimal max1 = BigDecimal.valueOf(1000), max2 = BigDecimal.valueOf(1);
-    private Random random = new Random();
+    protected final static double min = 0.01;
+    protected final static BigDecimal max1 = BigDecimal.valueOf(1000), max2 = BigDecimal.valueOf(1);
+    protected Random random = new Random();
 
-    private BigDecimal randDecimal(BigDecimal max) {
+    protected BigDecimal randDecimal(BigDecimal max) {
         double val = min + ((max.doubleValue() - min) * random.nextDouble());
         return AvgShareUtil.min(new BigDecimal(val).setScale(2, RoundingMode.CEILING), max);
     }
@@ -142,7 +142,7 @@ public class AvgShareTest {
         return true;
     }
 
-    private static class ImmutablePair<L, R> {
+    protected static class ImmutablePair<L, R> {
         public final L left;
         public final R right;
 
