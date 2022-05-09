@@ -39,10 +39,8 @@ public class AvgShareUtil {
      */
     public static <K, V> Map<K, BigDecimal> avgShare(Map<K, V> col, BigDecimal target, Function<V, BigDecimal> func) {
         final BigDecimal totalAmount = sum(col.values(), func);
-        if (target.compareTo(totalAmount) > 0) {
-            // 当target > totalAmount时，表示col中的元素全部分摊完，不允许出现 分摊金额 > col.values的场景
-            target = totalAmount;
-        }
+        // 当target > totalAmount时，表示col中的元素全部分摊完，不允许出现 分摊金额 > col.values的场景
+        target = min(target, totalAmount);
 
         BigDecimal remainAmount = target;
         int size = col.size();
