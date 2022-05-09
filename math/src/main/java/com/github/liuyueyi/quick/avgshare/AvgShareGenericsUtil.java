@@ -52,7 +52,8 @@ public class AvgShareGenericsUtil {
      */
     public static <R, D> Map<R, BigDecimal> avgShare(List<AvgParam<R, D>> col, AvgParam target) {
         final BigDecimal totalAmount = sum(col);
-        BigDecimal remainAmount = target.getValue();
+        final BigDecimal targetVal = totalAmount.compareTo(target.getValue()) > 0 ? target.getValue() : totalAmount;
+        BigDecimal remainAmount = targetVal;
         int size = col.size();
         Map<R, BigDecimal> result = new HashMap<>(size);
         for (AvgParam<R, D> entry : col) {
@@ -61,7 +62,7 @@ public class AvgShareGenericsUtil {
             if (--size == 0 || remainAmount.compareTo(BigDecimal.ZERO) == 0) {
                 result.put(key, remainAmount);
             } else {
-                BigDecimal sharedAmount = cell.multiply(target.getValue()).divide(totalAmount, 2, RoundingMode.CEILING);
+                BigDecimal sharedAmount = cell.multiply(targetVal).divide(totalAmount, 2, RoundingMode.CEILING);
                 result.put(key, sharedAmount);
                 remainAmount = remainAmount.subtract(sharedAmount);
             }
@@ -141,11 +142,7 @@ public class AvgShareGenericsUtil {
      * @return
      */
     public static <R, D> BigDecimal sum(Collection<AvgParam<R, D>> col) {
-        BigDecimal totalAmount = BigDecimal.ZERO;
-        for (AvgParam param : col) {
-            totalAmount = totalAmount.add(param.getValue());
-        }
-        return totalAmount;
+        return col.stream().map(AvgParam::getValue).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     /**

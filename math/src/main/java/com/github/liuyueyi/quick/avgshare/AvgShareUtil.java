@@ -5,6 +5,7 @@ import java.math.RoundingMode;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * 二维数组的均摊算法
@@ -27,6 +28,41 @@ import java.util.Map;
  * @date 2022/4/28
  */
 public class AvgShareUtil {
+    /**
+     * 一维数组均摊
+     *
+     * @param col
+     * @param target
+     * @param <K>
+     * @param <V>
+     * @return
+     */
+    public static <K, V> Map<K, BigDecimal> avgShare(Map<K, V> col, BigDecimal target, Function<V, BigDecimal> func) {
+        final BigDecimal totalAmount = sum(col.values(), func);
+        if (target.compareTo(totalAmount) > 0) {
+            // 当target > totalAmount时，表示col中的元素全部分摊完，不允许出现 分摊金额 > col.values的场景
+            target = totalAmount;
+        }
+
+        BigDecimal remainAmount = target;
+        int size = col.size();
+        Map<K, BigDecimal> result = new HashMap<>(size);
+        for (Map.Entry<K, V> entry : col.entrySet()) {
+            K key = entry.getKey();
+            BigDecimal cell = func.apply(entry.getValue());
+            if (--size == 0 || remainAmount.compareTo(BigDecimal.ZERO) == 0) {
+                result.put(key, remainAmount);
+            } else {
+                // 向上取整，避免出现最后一个分摊不够的场景
+                BigDecimal sharedAmount = cell.multiply(target).divide(totalAmount, 2, RoundingMode.CEILING);
+                result.put(key, sharedAmount);
+                remainAmount = remainAmount.subtract(sharedAmount);
+            }
+        }
+        return result;
+    }
+
+
     /**
      * 二维的均摊策略
      * 将col列的每个数据，按照均摊策略，分摊到 row 对应的每个数据上
@@ -94,11 +130,17 @@ public class AvgShareUtil {
      * @return
      */
     public static BigDecimal sum(Collection<BigDecimal> row) {
-        BigDecimal rowSum = BigDecimal.ZERO;
-        for (BigDecimal sub : row) {
-            rowSum = rowSum.add(sub);
-        }
-        return rowSum;
+        return sum(row, s -> s);
+    }
+
+    /**
+     * 求和
+     *
+     * @param row
+     * @return
+     */
+    public static <T> BigDecimal sum(Collection<T> row, Function<T, BigDecimal> parse) {
+        return row.stream().map(parse).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     /**
