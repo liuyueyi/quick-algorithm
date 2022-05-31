@@ -53,6 +53,8 @@ public class AvgShareUtil {
             } else {
                 // 向上取整，避免出现最后一个分摊不够的场景
                 BigDecimal sharedAmount = cell.multiply(target).divide(totalAmount, 2, RoundingMode.CEILING);
+                // 注意，取小，避免出现倒数第n个补齐的 shareAmount < remainAmount, 从而导致最后的几个补齐为负数的场景
+                sharedAmount = min(sharedAmount, remainAmount);
                 result.put(key, sharedAmount);
                 remainAmount = remainAmount.subtract(sharedAmount);
             }

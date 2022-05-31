@@ -63,6 +63,7 @@ public class AvgShareGenericsUtil {
                 result.put(key, remainAmount);
             } else {
                 BigDecimal sharedAmount = cell.multiply(targetVal).divide(totalAmount, 2, RoundingMode.CEILING);
+                sharedAmount = min(sharedAmount, remainAmount);
                 result.put(key, sharedAmount);
                 remainAmount = remainAmount.subtract(sharedAmount);
             }
